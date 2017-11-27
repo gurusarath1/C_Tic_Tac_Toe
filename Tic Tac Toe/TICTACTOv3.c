@@ -1,0 +1,215 @@
+#include<stdio.h>
+#include<conio.h>
+#define VER printf(" v3.0\n\n")
+#define FLUSH while(getchar() != '\n')
+#define BEEP printf("\a")
+
+//tic tac toe game v3.0 :)
+//By T.Guru Sarath EC B
+
+int printf_board(char board[3][3]);
+int win_check(char board[3][3]);
+
+int main()
+{
+int i,j,rowin,colin,X,count,win,PLAY_AGAIN;
+char board[3][3],c,p1[10],p2[10];
+FILE *fp;
+
+system ("title Tic Tac Toe v3.0 (Programmed by T.Guru Sarath)");
+system ("color fc");
+do {
+
+// Variable init
+
+printf("\n>Initializing variables . . . . . . . . ");
+
+X = 1;
+count= 0;
+win = 0;
+PLAY_AGAIN = 0;
+
+// initialising board
+for(i=0 ; i<3 ; i++)
+{
+for(j=0 ; j<3 ; j++)
+board[i][j] = '.';
+}
+
+system("cls");
+//Player details
+printf("Enter Player1's (X) Name - ");
+gets(p1);
+printf("Enter Player2's (O) Name - ");
+gets(p2);
+
+
+// initial board print
+printf_board(board);
+
+while(count < 9  && win == 0){
+
+
+	if(X)printf("\n %s's (X) turn\n",p1);
+	else printf("\n %s's (O) turn\n",p2);
+
+//Input and TYPE check (to prevent non integer input)
+
+	printf("\n Row ? - ");
+	while(scanf("%d",&rowin) == 0)    {printf(">Invalid Input :(\n Row ? - "); FLUSH;BEEP;BEEP;BEEP;}
+
+	FLUSH;
+
+	printf(" Column ? - ");
+	while(scanf("%d",&colin) == 0)    {printf(">Invalid Input :(\n Column ? - "); FLUSH;BEEP;BEEP;BEEP;}
+	rowin-- ; colin-- ;
+
+	FLUSH;
+
+
+// Input Validity check (to prevent worng integer input)
+
+if(board[rowin][colin] == '.')
+{
+	if(X)
+	{ board[rowin][colin] = 'X'; X = 0; }
+	else
+	{ board[rowin][colin] = 'O'; X = 1; }
+
+	count++;
+
+}else{printf(" \n ********* Entry already taken :( *********");BEEP;BEEP;BEEP;getch();}
+
+
+
+
+	//printf new board
+	
+	printf_board(board);
+
+	BEEP;
+
+//win check
+
+win = win_check(board);
+
+
+
+// while count
+}
+
+if(win == 1)
+	printf("\n   %s WINS !!!!    \a\a\a\a\a\a",p1);
+	
+else if(win == 2)
+	printf("\n   %s WINS !!!!    \a\a\a\a\a\a",p2);
+else 
+	printf("\n   Tie Match !!!!    \a\a");
+
+getch();
+
+if(win == 1 || win == 2)
+{
+
+	if((fp = fopen("tctatov3.guru","a")) == NULL) {printf("Cannot open file");}
+	
+	fprintf(fp,"%s(%c) Won against %s(%c) \n",(win == 1)? p1:p2,(win == 1)? 'X':'O',(win == 1)? p2:p1,(win == 1)? 'O':'X');
+	
+	fclose(fp);
+}
+
+
+	system("cls");
+	fp = fopen("tctatov3.guru","r");
+	
+	while((fscanf(fp,"%c",&c)) == 1)
+	printf("%c",c);
+	
+	fclose(fp);
+
+
+
+
+
+
+
+printf("\n\n\n\t Game programmed by T.Guru Sarath ECE - B 2nd Sem");
+
+
+printf("\n\n\n        Play Again ??? 1(yes)/0(no)       > ");
+
+while(scanf("%d",&PLAY_AGAIN) == 0){printf(">Invalid Input :(\n        Play Again ??? 1(yes)/0(no)       > "); FLUSH;BEEP;BEEP;BEEP;}
+
+}
+
+while (PLAY_AGAIN);
+
+
+
+
+
+
+
+getch();
+return 0;
+}
+
+
+// Board Print function
+
+	int printf_board(char board[3][3]){
+
+	int i,j;
+	system("cls");
+	printf("\t\t\t\t");
+	printf("TIC TAC TOE %c",1); VER;
+		for(i=0 ; i<3 ; i++)
+			{	
+				printf("\t\t\t\t  ");
+				for(j=0 ; j<3 ; j++)
+				printf(" %c ",board[i][j]);
+				printf("\n\n");
+			}
+
+	}
+
+// Win Check function
+
+int win_check(char board[3][3]){
+
+int i,j;
+
+for(i = 0; i<3 ; i++)
+{
+if(board[i][0] == 'X' && board[i][1] == 'X' && board[i][2] == 'X') return(1);
+else if(board[i][0] == 'O' && board[i][1] == 'O' && board[i][2] == 'O') return(2);
+}
+
+for(i = 0; i<3 ; i++)
+{
+if(board[0][i] == 'X' && board[1][i] == 'X' && board[2][i] == 'X') return(1);
+else if(board[0][i] == 'O' && board[1][i] == 'O' && board[2][i] == 'O') return(2);
+}
+
+if(board[0][0] == 'X' && board[1][1] == 'X' && board[2][2] == 'X') return(1);
+else if(board[0][0] == 'O' && board[1][1] == 'O' && board[2][2] == 'O') return(2);
+
+if(board[0][2] == 'X' && board[1][1] == 'X' && board[2][0] == 'X') return(1);
+else if(board[0][2] == 'O' && board[1][1] == 'O' && board[2][0] == 'O') return(2);
+
+return 0;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// Hare Krishna
